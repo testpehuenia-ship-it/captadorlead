@@ -57,7 +57,8 @@ export async function GET(req: Request) {
   try {
     // 1. Check status
     const statusReq = await fetch(
-      `https://api.apify.com/v2/actor-runs/${runId}?token=${token}`
+      `https://api.apify.com/v2/actor-runs/${runId}?token=${token}`,
+      { cache: "no-store" }
     );
     const statusData = await statusReq.json();
     const status = statusData.data.status;
@@ -69,7 +70,8 @@ export async function GET(req: Request) {
     // 2. If succeeded, fetch dataset
     const datasetId = statusData.data.defaultDatasetId;
     const datasetReq = await fetch(
-      `https://api.apify.com/v2/datasets/${datasetId}/items?token=${token}`
+      `https://api.apify.com/v2/datasets/${datasetId}/items?token=${token}`,
+      { cache: "no-store" }
     );
     const results = await datasetReq.json();
 
