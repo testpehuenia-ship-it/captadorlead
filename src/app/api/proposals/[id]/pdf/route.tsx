@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 import { renderToStream } from "@react-pdf/renderer";
 import { ProposalPDF } from "@/components/proposals/ProposalPDF";
-
-const prisma = new PrismaClient();
 
 export async function GET(
   req: Request,
