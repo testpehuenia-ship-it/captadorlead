@@ -58,10 +58,11 @@ export default function LeadsPage() {
           const res = await fetch(`/api/leads/search?runId=${runId}&t=${timestamp}`);
           const data = await res.json();
           
-          if (!data || data.error) {
+          if (!res.ok || !data || data.error) {
             console.error("Polling error:", data?.error);
-            // Don't clear interval immediately, might be a temporary network issue, 
-            // but if we want to fail fast we could. We'll just let it poll or wait for user to cancel.
+            setStatus(`ERROR: ${data?.error || 'Error de conexión'}`);
+            setLoading(false);
+            clearInterval(interval);
             return;
           }
 

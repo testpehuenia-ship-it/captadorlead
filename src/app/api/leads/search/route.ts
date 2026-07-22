@@ -110,8 +110,8 @@ export async function GET(req: Request) {
     }
 
     return NextResponse.json({ status: "SUCCEEDED", data: savedLeads });
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: "Error consultando Apify" }, { status: 500 });
+  } catch (error: any) {
+    console.error("API ERROR:", error);
+    return NextResponse.json({ error: error.message || "Error consultando Apify" }, { status: 500 });
   }
 }
