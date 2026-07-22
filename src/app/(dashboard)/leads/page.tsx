@@ -106,6 +106,12 @@ export default function LeadsPage() {
     }
   };
 
+  const handleCancel = () => {
+    setLoading(false);
+    setRunId(null);
+    setStatus("CANCELADO");
+  };
+
   return (
     <div className="space-y-6 animate-fade-in">
       <div>
@@ -148,20 +154,32 @@ export default function LeadsPage() {
                 />
               </div>
             </div>
-            <Button 
-              type="submit" 
-              disabled={loading}
-              className="w-full md:w-auto bg-primary hover:bg-primary/90 text-primary-foreground px-8 shadow-[0_0_15px_rgba(124,58,237,0.4)] transition-all hover:shadow-[0_0_25px_rgba(124,58,237,0.6)]"
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Buscando...
-                </>
-              ) : (
-                "Buscar Leads"
+            <div className="flex gap-2 w-full md:w-auto">
+              <Button 
+                type="submit" 
+                disabled={loading}
+                className="w-full md:w-auto bg-primary hover:bg-primary/90 text-primary-foreground px-8 shadow-[0_0_15px_rgba(124,58,237,0.4)] transition-all hover:shadow-[0_0_25px_rgba(124,58,237,0.6)]"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Buscando... ({status})
+                  </>
+                ) : (
+                  "Buscar Leads"
+                )}
+              </Button>
+              {loading && (
+                <Button 
+                  type="button" 
+                  variant="destructive"
+                  onClick={handleCancel}
+                  className="px-4"
+                >
+                  Cancelar
+                </Button>
               )}
-            </Button>
+            </div>
           </form>
           
           {status && (
