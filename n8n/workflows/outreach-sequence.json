@@ -1,0 +1,102 @@
+{
+  "name": "ADNQN Outreach Sequence (Email + Manual WA)",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "outreach-trigger",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "1",
+      "name": "Webhook (Next.js)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "custom-outreach-id"
+    },
+    {
+      "parameters": {
+        "fromEmail": "info@adnqn.com",
+        "toEmail": "={{ $json.body.email }}",
+        "subject": "={{ $json.body.subject }}",
+        "html": "={{ $json.body.content }}",
+        "options": {}
+      },
+      "id": "2",
+      "name": "Zoho SMTP Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [450, 300],
+      "credentials": {
+        "smtp": {
+          "id": "zoho-smtp",
+          "name": "Zoho Mail SMTP"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 2,
+        "unit": "days"
+      },
+      "id": "3",
+      "name": "Wait (2 Days)",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "channel": "internal-slack-or-email",
+        "message": "=🔔 Toca enviar WhatsApp a {{ $json.body.companyName }}\\n\\nLink manual: https://wa.me/{{ $json.body.phone }}?text=Hola%20somos%20ADNQN..."
+      },
+      "id": "4",
+      "name": "Notify Admin for WhatsApp",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [850, 300],
+      "notes": "Cambiar por nodo de Slack/Email interno"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook (Next.js)": {
+      "main": [
+        [
+          {
+            "node": "Zoho SMTP Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Zoho SMTP Email": {
+      "main": [
+        [
+          {
+            "node": "Wait (2 Days)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait (2 Days)": {
+      "main": [
+        [
+          {
+            "node": "Notify Admin for WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f7d3a042-88f1-419b-ab2a-9dbefb68018e"
+}
