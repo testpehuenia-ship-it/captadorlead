@@ -54,9 +54,17 @@ export default function LeadsPage() {
     if (runId && status !== "SUCCEEDED" && status !== "FAILED") {
       interval = setInterval(async () => {
         try {
-          const res = await fetch(`/api/leads/search?runId=${runId}`);
+          const timestamp = new Date().getTime();
+          const res = await fetch(`/api/leads/search?runId=${runId}&t=${timestamp}`);
           const data = await res.json();
           
+          if (!data || data.error) {
+            console.error("Polling error:", data?.error);
+            // Don't clear interval immediately, might be a temporary network issue, 
+            // but if we want to fail fast we could. We'll just let it poll or wait for user to cancel.
+            return;
+          }
+
           if (data.status === "SUCCEEDED") {
             setLeads(data.data || []);
             setStatus("SUCCEEDED");
