@@ -123,7 +123,7 @@ export default function LeadsPage() {
         <CardContent>
           <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4 items-end">
             <div className="space-y-2 flex-1">
-              <label className="text-sm font-medium text-muted-foreground">Rubro / Palabra Clave</label>
+              <label className="text-sm font-medium text-foreground">Rubro / Palabra Clave</label>
               <div className="relative">
                 <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input 
@@ -136,7 +136,7 @@ export default function LeadsPage() {
               </div>
             </div>
             <div className="space-y-2 flex-1">
-              <label className="text-sm font-medium text-muted-foreground">Localidad</label>
+              <label className="text-sm font-medium text-foreground">Localidad</label>
               <div className="relative">
                 <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input 
